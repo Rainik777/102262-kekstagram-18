@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм» [![Build status][travis-image]][travis-url]
 
 * Студент: [Евгений Рейн](https://up.htmlacademy.ru/javascript/18/user/102262).
-* Наставник: `Неизвестно`.
+* Наставник: [Andrey Karyakin](https://htmlacademy.ru/profile/id133011).
 
 ---
 
