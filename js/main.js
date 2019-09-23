@@ -52,26 +52,44 @@ var cloneArray = function (array) {
 
 // берем случайный элемент массива без повторов
 var getRandomElement = function (array) {
-  return array.splice(Math.floor(Math.random() * array.length), 1);
+  var arrayCloned = cloneArray(array);
+  return arrayCloned.splice(Math.floor(Math.random() * arrayCloned.length), 1);
 };
 
 // объект комментарий
-var names = cloneArray(NAMES);
-var comments = cloneArray(COMMENTS);
 // генерируем комментарий из массива комментраиев
 var getComment = function (array) {
-  var str = '';
+  var arrayCloned = cloneArray(array);
+  var newComment = [];
   var ammount = Math.floor(Math.random() * MAX_COMMENT_LENGTH + MIN_COMMENT_LENGTH);
   for (var i = 0; i < ammount; i++) {
-    str += getRandomElement(array) + ' ';
+    ;
   }
 
-  return str;
+  return newComment.join(' ');
 };
-var comment = {
-  avatar: 'img/avatar-' + getRandomElement(AVATAR_NUMBERS) + '.svg',
-  message: getComment(comments),
-  name: getRandomElement(names)
+
+var addComment = function (comments, names, avatarNumber) {
+  var commentsCloned = cloneArray(comments);
+  var namesCloned = cloneArray(names);
+  var avatarNumberCloned = cloneArray(avatarNumber);
+  var comment = {
+    avatar: 'img/avatar-' + getRandomElement(avatarNumberCloned) + '.svg',
+    message: getComment(commentsCloned),
+    name: getRandomElement(namesCloned)
+  };
+
+  return comment;
+};
+
+var fullCommentList = function (min, max) {
+  var commentList = [];
+  var commentAmmount = Math.floor(Math.random() * (max - min) + min);
+  for (var i = 0; i < commentAmmount; i++) {
+    commentList.push(addComment(COMMENTS, NAMES, AVATAR_NUMBERS));
+  }
+
+  return commentList;
 };
 
 // генерируем массив фоточек
@@ -80,15 +98,6 @@ var generatePhotoList = function (ammount) {
   // объект фотография
   var photoNumbers = generateArrayOfNumbers(AMMOUNT_OF_PHOTOS);
   // массив комментариев под фото
-  var fullCommentList = function (min, max) {
-    var commentList = [];
-    var commentAmmount = Math.floor(Math.random() * (max - min) + min);
-    for (var i = 0; i < commentAmmount; i++) {
-      commentList.push(comment);
-    }
-
-    return commentList;
-  };
   for (var i = 0; i < ammount; i++) {
     // сама фоточка
     var photo = {
