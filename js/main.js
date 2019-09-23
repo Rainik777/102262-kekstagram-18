@@ -124,7 +124,7 @@ var preparePhotoElement = function (foto) {
 var renderPhotos = function (array) {
   var fragment = document.createDocumentFragment();
   for (var i = 0; i < array.length; i++) {
-  fragment.appendChild(preparePhotoElement(array[i]));
+    fragment.appendChild(preparePhotoElement(array[i]));
   }
 
   PICTURES.appendChild(fragment);
