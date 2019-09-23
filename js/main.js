@@ -40,7 +40,7 @@ var generateLikes = function (min, max) {
 };
 
 // клонируем переданный массив
-var cloneArray = function(array) {
+var cloneArray = function (array) {
   return array.slice();
 };
 
@@ -49,14 +49,14 @@ var getRandomElement = function (array) {
   return array.splice(Math.floor(Math.random() * array.length), 1);
 };
 
-//объект комментарий
+// объект комментарий
 var avatarNumbers = generateArrayOfNumbers(AMMOUNT_OF_AVATARS);
 var names = cloneArray(NAMES);
 var comments = cloneArray(COMMENTS);
 // генерируем комментарий из массива комментраиев
 var getComment = function (array) {
   var MAX_COMMENT_LENGTH = 2;
-  var MIN_COMMENT_LENGTH = 1
+  var MIN_COMMENT_LENGTH = 1;
   var str = '';
   var ammount = Math.floor(Math.random() * MAX_COMMENT_LENGTH + MIN_COMMENT_LENGTH);
   for (var i = 0; i < ammount; i++) {
@@ -79,8 +79,8 @@ var generatePhotoList = function (ammount) {
   // массив комментариев под фото
   var fullCommentList = function (min, max) {
     var commentList = [];
-    var ammount = Math.floor(Math.random() * (max - min) + min);
-    for (var i = 0; i < ammount; i++) {
+    var commentAmmount = Math.floor(Math.random() * (max - min) + min);
+    for (var i = 0; i < commentAmmount; i++) {
       commentList.push(comment);
     } return commentList;
   };
@@ -93,7 +93,7 @@ var generatePhotoList = function (ammount) {
       comments: fullCommentList(MIN_COMMENTS, MAX_COMMENTS)
     };
     photoList.push(photo);
-  };
+  }
   return photoList;
 };
 
@@ -105,7 +105,7 @@ var preparePhotoElement = function (foto) {
   photoElement.querySelector('.picture__comments').textContent = foto.comments.length;
 
   return photoElement;
-}
+};
 
 var renderPhotos = function (array) {
   var fragment = document.createDocumentFragment();
