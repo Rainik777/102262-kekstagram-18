@@ -47,12 +47,44 @@ var getRandomElement = function (array) {
   return array.splice(Math.floor(Math.random() * array.length), 1);
 };
 
-// объект фотография
-var photoList = [];
-var photoNumbers = generateArrayOfNumbers(AMMOUNT_OF_PHOTOS);
-
-var photo = {
-  url: 'photos/' + getRandomElement(photoNumbers) + '.jpg'
+//объект комментарий
+var avatarNumbers = generateArrayOfNumbers(AMMOUNT_OF_AVATARS);
+var names = cloneArray(NAMES);
+var comments = cloneArray(COMMENTS);
+// генерируем комментарий из массива комментраиев
+var getComment = function (array) {
+  var MAX_COMMENT_LENGTH = 2;
+  var MIN_COMMENT_LENGTH = 1
+  var str = '';
+  var ammount = Math.floor(Math.random() * MAX_COMMENT_LENGTH + MIN_COMMENT_LENGTH);
+  for (var i = 0; i < ammount; i++) {
+    str += getRandomElement(array) + ' ';
+  } return str;
+};
+var comment = {
+  avatar: 'img/avatar-' + getRandomElement(avatarNumbers) + '.svg',
+  message: getComment(comments),
+  name: getRandomElement(names)
 };
 
-console.log(photo.url);
+// объект фотография
+var MIN_COMMENTS = 1;
+var MAX_COMMENTS = 6;
+var photoList = [];
+var photoNumbers = generateArrayOfNumbers(AMMOUNT_OF_PHOTOS);
+var fullCommentList = function (min, max) {
+  var commentList = [];
+  var ammount = Math.floor(Math.random() * (max - min) + min);
+  for (var i = 0; i < ammount; i++) {
+    commentList.push(comment);
+  } return commentList;
+};
+var photo = {
+  url: 'photos/' + getRandomElement(photoNumbers) + '.jpg',
+  description: DESCRIPTION,
+  likes: generateLikes(MIN_LIKES, MAX_LIKES),
+  comments: fullCommentList(MIN_COMMENTS, MAX_COMMENTS)
+};
+
+// console.log(comment.avatar + ' ' + comment.message + ' ' + comment.name);
+console.log(photo.url + ' ' + photo.description + ' ' + photo.likes + ' ' + photo.comments[0].message);
