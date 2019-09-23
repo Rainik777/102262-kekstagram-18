@@ -7,6 +7,10 @@ var AMMOUNT_OF_AVATARS = 6;
 var DESCRIPTION = 'описание фотографии';
 var MIN_LIKES = 15;
 var MAX_LIKES = 200;
+var MIN_COMMENTS = 1;
+var MAX_COMMENTS = 6;
+var MAX_COMMENT_LENGTH = 2;
+var MIN_COMMENT_LENGTH = 1;
 var COMMENTS = [
   'Всё отлично!',
   'В целом всё неплохо. Но не всё.',
@@ -34,6 +38,8 @@ var generateArrayOfNumbers = function (ammount) {
   return numbers;
 };
 
+var AVATAR_NUMBERS = generateArrayOfNumbers(AMMOUNT_OF_AVATARS);
+
 // генерируем количество лайков
 var generateLikes = function (min, max) {
   return Math.floor(Math.random() * (max - min) + min);
@@ -50,21 +56,20 @@ var getRandomElement = function (array) {
 };
 
 // объект комментарий
-var avatarNumbers = generateArrayOfNumbers(AMMOUNT_OF_AVATARS);
 var names = cloneArray(NAMES);
 var comments = cloneArray(COMMENTS);
 // генерируем комментарий из массива комментраиев
 var getComment = function (array) {
-  var MAX_COMMENT_LENGTH = 2;
-  var MIN_COMMENT_LENGTH = 1;
   var str = '';
   var ammount = Math.floor(Math.random() * MAX_COMMENT_LENGTH + MIN_COMMENT_LENGTH);
   for (var i = 0; i < ammount; i++) {
     str += getRandomElement(array) + ' ';
-  } return str;
+  }
+
+  return str;
 };
 var comment = {
-  avatar: 'img/avatar-' + getRandomElement(avatarNumbers) + '.svg',
+  avatar: 'img/avatar-' + getRandomElement(AVATAR_NUMBERS) + '.svg',
   message: getComment(comments),
   name: getRandomElement(names)
 };
@@ -73,8 +78,6 @@ var comment = {
 var generatePhotoList = function (ammount) {
   var photoList = [];
   // объект фотография
-  var MIN_COMMENTS = 1;
-  var MAX_COMMENTS = 6;
   var photoNumbers = generateArrayOfNumbers(AMMOUNT_OF_PHOTOS);
   // массив комментариев под фото
   var fullCommentList = function (min, max) {
@@ -82,7 +85,9 @@ var generatePhotoList = function (ammount) {
     var commentAmmount = Math.floor(Math.random() * (max - min) + min);
     for (var i = 0; i < commentAmmount; i++) {
       commentList.push(comment);
-    } return commentList;
+    }
+
+    return commentList;
   };
   for (var i = 0; i < ammount; i++) {
     // сама фоточка
