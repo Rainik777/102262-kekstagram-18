@@ -1,5 +1,7 @@
 'use strict';
 
+var PICTURE_TEMPLATE = document.querySelector('#picture').content.querySelector('.picture');
+var PICTURES = document.querySelector('.pictures');
 var AMMOUNT_OF_PHOTOS = 25;
 var AMMOUNT_OF_AVATARS = 6;
 var DESCRIPTION = 'описание фотографии';
@@ -67,24 +69,51 @@ var comment = {
   name: getRandomElement(names)
 };
 
-// объект фотография
-var MIN_COMMENTS = 1;
-var MAX_COMMENTS = 6;
-var photoList = [];
-var photoNumbers = generateArrayOfNumbers(AMMOUNT_OF_PHOTOS);
-var fullCommentList = function (min, max) {
-  var commentList = [];
-  var ammount = Math.floor(Math.random() * (max - min) + min);
+// генерируем массив фоточек
+var generatePhotoList = function (ammount) {
+  var photoList = [];
+  // объект фотография
+  var MIN_COMMENTS = 1;
+  var MAX_COMMENTS = 6;
+  var photoNumbers = generateArrayOfNumbers(AMMOUNT_OF_PHOTOS);
+  // массив комментариев под фото
+  var fullCommentList = function (min, max) {
+    var commentList = [];
+    var ammount = Math.floor(Math.random() * (max - min) + min);
+    for (var i = 0; i < ammount; i++) {
+      commentList.push(comment);
+    } return commentList;
+  };
   for (var i = 0; i < ammount; i++) {
-    commentList.push(comment);
-  } return commentList;
-};
-var photo = {
-  url: 'photos/' + getRandomElement(photoNumbers) + '.jpg',
-  description: DESCRIPTION,
-  likes: generateLikes(MIN_LIKES, MAX_LIKES),
-  comments: fullCommentList(MIN_COMMENTS, MAX_COMMENTS)
+    // сама фоточка
+    var photo = {
+      url: 'photos/' + getRandomElement(photoNumbers) + '.jpg',
+      description: DESCRIPTION,
+      likes: generateLikes(MIN_LIKES, MAX_LIKES),
+      comments: fullCommentList(MIN_COMMENTS, MAX_COMMENTS)
+    };
+    photoList.push(photo);
+  };
+  return photoList;
 };
 
-// console.log(comment.avatar + ' ' + comment.message + ' ' + comment.name);
-console.log(photo.url + ' ' + photo.description + ' ' + photo.likes + ' ' + photo.comments[0].message);
+var preparePhotoElement = function (foto) {
+  var photoElement = PICTURE_TEMPLATE.cloneNode(true);
+
+  photoElement.querySelector('.picture__img').src = foto.url;
+  photoElement.querySelector('.picture__likes').textContent = foto.likes;
+  photoElement.querySelector('.picture__comments').textContent = foto.comments.length;
+
+  return photoElement;
+}
+
+var renderPhotos = function (array) {
+  var fragment = document.createDocumentFragment();
+  for (var i = 0; i < array.length; i++) {
+    fragment.appendChild(preparePhotoElement(array[i]));
+  }
+  PICTURES.appendChild(fragment);
+};
+
+renderPhotos(generatePhotoList(AMMOUNT_OF_PHOTOS));
+
