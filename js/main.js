@@ -101,8 +101,8 @@ var generatePhotoList = function (ammount) {
     var photo = {
       url: 'photos/' + getRandomElement(photoNumbers) + '.jpg',
       description: DESCRIPTION,
-    //  likes: generateLikes(MIN_LIKES, MAX_LIKES),
-     // comments: fullCommentList(MIN_COMMENTS, MAX_COMMENTS)
+      likes: generateLikes(MIN_LIKES, MAX_LIKES),
+      comments: fullCommentList(MIN_COMMENTS, MAX_COMMENTS)
     };
     photoList.push(photo);
   }
@@ -114,15 +114,15 @@ var preparePhotoElement = function (foto) {
   var photoElement = PICTURE_TEMPLATE.cloneNode(true);
 
   photoElement.querySelector('.picture__img').src = foto.url;
-  // photoElement.querySelector('.picture__likes').textContent = foto.likes;
-  // photoElement.querySelector('.picture__comments').textContent = foto.comments.length;
+  photoElement.querySelector('.picture__likes').textContent = foto.likes;
+  photoElement.querySelector('.picture__comments').textContent = foto.comments.length;
 
   return photoElement;
 };
 
 var renderPhotos = function (array) {
   var fragment = document.createDocumentFragment();
-  array.forEach(function(item) {
+  array.forEach(function (item) {
     fragment.appendChild(preparePhotoElement(item));
   });
 
