@@ -29,7 +29,7 @@ var NAMES = [
 ];
 
 // генерируем массив из N чисел, что бы не ручками
-var generateArrayOfNumbers = function (ammount) {
+var generateNumberList = function (ammount) {
   var numbers = [];
   for (var i = 1; i <= ammount; i++) {
     numbers.push(i);
@@ -38,10 +38,10 @@ var generateArrayOfNumbers = function (ammount) {
   return numbers;
 };
 
-var AVATAR_NUMBERS = generateArrayOfNumbers(AMMOUNT_OF_AVATARS);
+var AVATAR_NUMBERS = generateNumberList(AMMOUNT_OF_AVATARS);
 
 // генерируем количество лайков
-var generateLikes = function (min, max) {
+var getRandomBetween = function (min, max) {
   return Math.floor(Math.random() * (max - min) + min);
 };
 
@@ -94,14 +94,14 @@ var fullCommentList = function (min, max) {
 // генерируем массив фоточек
 var generatePhotoList = function (ammount) {
   var photoList = [];
-  var photoNumbers = generateArrayOfNumbers(AMMOUNT_OF_PHOTOS);
+  var photoNumbers = generateNumberList(AMMOUNT_OF_PHOTOS);
   // массив комментариев под фото
   for (var i = 0; i < ammount; i++) {
     // сама фоточка
     var photo = {
       url: 'photos/' + getRandomElement(photoNumbers) + '.jpg',
       description: DESCRIPTION,
-      likes: generateLikes(MIN_LIKES, MAX_LIKES),
+      likes: getRandomBetween(MIN_LIKES, MAX_LIKES),
       comments: fullCommentList(MIN_COMMENTS, MAX_COMMENTS)
     };
     photoList.push(photo);
