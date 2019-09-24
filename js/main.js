@@ -27,6 +27,7 @@ var NAMES = [
   'Фиби Буффе',
   'Чендлер Бинг'
 ];
+var newCommentList = [];
 
 // генерируем массив из N чисел, что бы не ручками
 var generateNumberList = function (ammount) {
@@ -59,20 +60,18 @@ var getRandomElement = function (array) {
 
 // правда или ложь
 var trueOrFalse = function () {
-  return Math.random() >= 0.3;
+  return Math.random() >= 0.5;
 };
 
 // объект комментарий
 // генерируем комментарий из массива комментраиев
 var getComment = function (array) {
-  var newComment = array.filter(trueOrFalse);
-  var newCommentList = [];
+  var arrayCloned = cloneArray(array);
   var ammount = Math.floor(Math.random() * MAX_COMMENT_LENGTH + MIN_COMMENT_LENGTH);
-  for (var i = 0; i < ammount; i++) {
-    newCommentList.push(getRandomElement(newComment));
-  }
+  newCommentList.push(getRandomElement(arrayCloned));
+  newCommentList.concat(arrayCloned.filter(trueOrFalse));
 
-  return newCommentList.join(' ');
+  return newCommentList.splice(ammount, newCommentList.length).join(' ');
 };
 
 var addComment = function () {
