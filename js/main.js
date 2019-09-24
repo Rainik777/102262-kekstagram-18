@@ -59,7 +59,7 @@ var getRandomElement = function (array) {
 
 // правда или ложь
 var trueOrFalse = function () {
-    return Math.random() >= 0.3;
+  return Math.random() >= 0.3;
 };
 
 // объект комментарий
@@ -135,4 +135,3 @@ var renderPhotos = function (array) {
 };
 
 renderPhotos(generatePhotoList(AMMOUNT_OF_PHOTOS));
-console.log(getComment(COMMENTS));
