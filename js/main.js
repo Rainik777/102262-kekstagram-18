@@ -69,12 +69,11 @@ var getComment = function (array) {
 };
 
 var addComment = function (comments, names, avatarNumber) {
-  var commentsCloned = cloneArray(comments);
   var namesCloned = cloneArray(names);
   var avatarNumberCloned = cloneArray(avatarNumber);
   var comment = {
     avatar: 'img/avatar-' + getRandomElement(avatarNumberCloned) + '.svg',
-    message: getComment(commentsCloned),
+    message: getComment(comments),
     name: getRandomElement(namesCloned)
   };
 
