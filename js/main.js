@@ -95,19 +95,20 @@ var fullCommentList = function (min, max) {
 // генерируем массив фоточек
 var generatePhotoList = function (ammount) {
   var photoList = [];
-  // объект фотография
   var photoNumbers = generateArrayOfNumbers(AMMOUNT_OF_PHOTOS);
+
   // массив комментариев под фото
   for (var i = 0; i < ammount; i++) {
     // сама фоточка
     var photo = {
       url: 'photos/' + getRandomElement(photoNumbers) + '.jpg',
       description: DESCRIPTION,
-      likes: generateLikes(MIN_LIKES, MAX_LIKES),
-      comments: fullCommentList(MIN_COMMENTS, MAX_COMMENTS)
+    //  likes: generateLikes(MIN_LIKES, MAX_LIKES),
+     // comments: fullCommentList(MIN_COMMENTS, MAX_COMMENTS)
     };
     photoList.push(photo);
   }
+
   return photoList;
 };
 
@@ -115,17 +116,17 @@ var preparePhotoElement = function (foto) {
   var photoElement = PICTURE_TEMPLATE.cloneNode(true);
 
   photoElement.querySelector('.picture__img').src = foto.url;
-  photoElement.querySelector('.picture__likes').textContent = foto.likes;
-  photoElement.querySelector('.picture__comments').textContent = foto.comments.length;
+  // photoElement.querySelector('.picture__likes').textContent = foto.likes;
+  // photoElement.querySelector('.picture__comments').textContent = foto.comments.length;
 
   return photoElement;
 };
 
 var renderPhotos = function (array) {
   var fragment = document.createDocumentFragment();
-  for (var i = 0; i < array.length; i++) {
-    fragment.appendChild(preparePhotoElement(array[i]));
-  }
+  array.forEach(function(item) {
+    fragment.appendChild(preparePhotoElement(item));
+  });
 
   PICTURES.appendChild(fragment);
 };
