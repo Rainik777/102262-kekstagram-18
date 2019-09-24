@@ -52,8 +52,7 @@ var cloneArray = function (array) {
 
 // берем случайный элемент массива без повторов
 var getRandomElement = function (array) {
-  var arrayCloned = cloneArray(array);
-  return arrayCloned.splice(Math.floor(Math.random() * arrayCloned.length), 1);
+  return array.splice(Math.floor(Math.random() * array.length), 1);
 };
 
 // объект комментарий
@@ -96,7 +95,6 @@ var fullCommentList = function (min, max) {
 var generatePhotoList = function (ammount) {
   var photoList = [];
   var photoNumbers = generateArrayOfNumbers(AMMOUNT_OF_PHOTOS);
-
   // массив комментариев под фото
   for (var i = 0; i < ammount; i++) {
     // сама фоточка
