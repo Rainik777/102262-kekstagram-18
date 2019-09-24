@@ -57,17 +57,22 @@ var getRandomElement = function (array) {
   return array.splice(Math.floor(Math.random() * array.length), 1);
 };
 
+// правда или ложь
+var trueOrFalse = function () {
+    return Math.random() >= 0.3;
+};
+
 // объект комментарий
 // генерируем комментарий из массива комментраиев
 var getComment = function (array) {
-  var arrayCloned = cloneArray(array);
-  var newComment = [];
+  var newComment = array.filter(trueOrFalse);
+  var newCommentList = [];
   var ammount = Math.floor(Math.random() * MAX_COMMENT_LENGTH + MIN_COMMENT_LENGTH);
   for (var i = 0; i < ammount; i++) {
-    newComment.push(getRandomElement(arrayCloned));
+    newCommentList.push(getRandomElement(newComment));
   }
 
-  return newComment.join(' ');
+  return newCommentList.join(' ');
 };
 
 var addComment = function () {
@@ -130,4 +135,4 @@ var renderPhotos = function (array) {
 };
 
 renderPhotos(generatePhotoList(AMMOUNT_OF_PHOTOS));
-
+console.log(getComment(COMMENTS));
