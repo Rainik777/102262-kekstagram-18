@@ -38,7 +38,9 @@ var generateNumberList = function (ammount) {
   return numbers;
 };
 
+// массивы номеров для аваторов и фоточек
 var AVATAR_NUMBERS = generateNumberList(AMMOUNT_OF_AVATARS);
+var PHOTO_NUMBERS = generateNumberList(AMMOUNT_OF_PHOTOS);
 
 // генерируем количество лайков
 var getRandomBetween = function (min, max) {
@@ -68,12 +70,12 @@ var getComment = function (array) {
   return newComment.join(' ');
 };
 
-var addComment = function (comments, names, avatarNumber) {
-  var namesCloned = cloneArray(names);
-  var avatarNumberCloned = cloneArray(avatarNumber);
+var addComment = function () {
+  var namesCloned = cloneArray(NAMES);
+  var avatarNumberCloned = cloneArray(AVATAR_NUMBERS);
   var comment = {
     avatar: 'img/avatar-' + getRandomElement(avatarNumberCloned) + '.svg',
-    message: getComment(comments),
+    message: getComment(COMMENTS),
     name: getRandomElement(namesCloned)
   };
 
@@ -84,7 +86,7 @@ var fullCommentList = function (min, max) {
   var commentList = [];
   var commentAmmount = Math.floor(Math.random() * (max - min) + min);
   for (var i = 0; i < commentAmmount; i++) {
-    commentList.push(addComment(COMMENTS, NAMES, AVATAR_NUMBERS));
+    commentList.push(addComment());
   }
 
   return commentList;
@@ -93,12 +95,11 @@ var fullCommentList = function (min, max) {
 // генерируем массив фоточек
 var generatePhotoList = function (ammount) {
   var photoList = [];
-  var photoNumbers = generateNumberList(AMMOUNT_OF_PHOTOS);
   // массив комментариев под фото
   for (var i = 0; i < ammount; i++) {
     // сама фоточка
     var photo = {
-      url: 'photos/' + getRandomElement(photoNumbers) + '.jpg',
+      url: 'photos/' + getRandomElement(PHOTO_NUMBERS) + '.jpg',
       description: DESCRIPTION,
       likes: getRandomBetween(MIN_LIKES, MAX_LIKES),
       comments: fullCommentList(MIN_COMMENTS, MAX_COMMENTS)
