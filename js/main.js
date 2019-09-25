@@ -80,12 +80,12 @@ var getCommentMessage = function () {
 };
 
 var createComment = function () {
-  var namesCloned = cloneArray(NAMES);
-  var avatarNumberCloned = cloneArray(AVATAR_NUMBERS);
+  var names = cloneArray(NAMES);
+  var avatarNumber = cloneArray(AVATAR_NUMBERS);
   var comment = {
-    avatar: 'img/avatar-' + getRandomElement(avatarNumberCloned) + '.svg',
+    avatar: 'img/avatar-' + getRandomElement(avatarNumber) + '.svg',
     message: getCommentMessage(),
-    name: getRandomElement(namesCloned)
+    name: getRandomElement(names)
   };
 
   return comment;
