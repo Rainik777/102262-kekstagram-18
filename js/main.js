@@ -58,20 +58,20 @@ var getRandomElement = function (array) {
   return array.splice(Math.floor(Math.random() * array.length), 1);
 };
 
-// правда или ложь
-var trueOrFalse = function () {
-  return Math.random() >= 0.5;
-};
+// правда или ложь --- про запас, на случай альтернативной реализации
+// var trueOrFalse = function () {
+//   return Math.random() >= 0.5;
+// };
 
 // объект комментарий
 // генерируем комментарий из массива комментраиев
 // --- TODO --- рассмотреть возможность украшения функции через filter, concat, slice --- TODO ---
 var getCommentMessage = function () {
   var newCommentList = [];
-  var arrayCloned = cloneArray(COMMENTS);
+  var comments = cloneArray(COMMENTS);
   var ammount = Math.floor(Math.random() * MAX_COMMENT_LENGTH + MIN_COMMENT_LENGTH);
   for (var i = 0; i < ammount; i++) {
-    newCommentList.push(getRandomElement(arrayCloned));
+    newCommentList.push(getRandomElement(comments));
   }
   // newCommentList.concat(arrayCloned.filter(trueOrFalse));
   // newCommentList.slice(0, ammount).join(' ');
