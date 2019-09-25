@@ -27,7 +27,7 @@ var NAMES = [
   'Фиби Буффе',
   'Чендлер Бинг'
 ];
-var newCommentList = [];
+
 
 // генерируем массив из N чисел, что бы не ручками
 var generateNumberList = function (ammount) {
@@ -65,21 +65,26 @@ var trueOrFalse = function () {
 
 // объект комментарий
 // генерируем комментарий из массива комментраиев
-var getComment = function (array) {
-  var arrayCloned = cloneArray(array);
+// --- TODO --- рассмотреть возможность украшения функции через filter, concat, slice --- TODO ---
+var getCommentMessage = function () {
+  var newCommentList = [];
+  var arrayCloned = cloneArray(COMMENTS);
   var ammount = Math.floor(Math.random() * MAX_COMMENT_LENGTH + MIN_COMMENT_LENGTH);
-  newCommentList.push(getRandomElement(arrayCloned));
-  newCommentList.concat(arrayCloned.filter(trueOrFalse));
+  for (var i = 0; i < ammount; i++) {
+    newCommentList.push(getRandomElement(arrayCloned));
+  }
+  // newCommentList.concat(arrayCloned.filter(trueOrFalse));
+  // newCommentList.slice(0, ammount).join(' ');
 
-  return newCommentList.splice(ammount, newCommentList.length).join(' ');
+  return newCommentList.join(' ');
 };
 
-var addComment = function () {
+var createComment = function () {
   var namesCloned = cloneArray(NAMES);
   var avatarNumberCloned = cloneArray(AVATAR_NUMBERS);
   var comment = {
     avatar: 'img/avatar-' + getRandomElement(avatarNumberCloned) + '.svg',
-    message: getComment(COMMENTS),
+    message: getCommentMessage(),
     name: getRandomElement(namesCloned)
   };
 
@@ -90,7 +95,7 @@ var fullCommentList = function (min, max) {
   var commentList = [];
   var commentAmmount = Math.floor(Math.random() * (max - min) + min);
   for (var i = 0; i < commentAmmount; i++) {
-    commentList.push(addComment());
+    commentList.push(createComment());
   }
 
   return commentList;
