@@ -78,7 +78,7 @@ var getCommentMessage = function () {
   return newCommentList.join(' ');
 };
 
-//создает объект комментарий
+// создает объект комментарий
 var createComment = function () {
   var names = cloneArray(NAMES);
   var avatarNumber = cloneArray(AVATAR_NUMBERS);
