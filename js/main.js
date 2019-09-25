@@ -63,7 +63,6 @@ var getRandomElement = function (array) {
 //   return Math.random() >= 0.5;
 // };
 
-// объект комментарий
 // генерируем комментарий из массива комментраиев
 // --- TODO --- рассмотреть возможность украшения функции через filter, concat, slice --- TODO ---
 var getCommentMessage = function () {
@@ -79,6 +78,7 @@ var getCommentMessage = function () {
   return newCommentList.join(' ');
 };
 
+//создает объект комментарий
 var createComment = function () {
   var names = cloneArray(NAMES);
   var avatarNumber = cloneArray(AVATAR_NUMBERS);
@@ -91,6 +91,7 @@ var createComment = function () {
   return comment;
 };
 
+// создает массив из объектов комментарий для размещения под фотографией
 var fullCommentList = function (min, max) {
   var commentList = [];
   var commentAmmount = Math.floor(Math.random() * (max - min) + min);
