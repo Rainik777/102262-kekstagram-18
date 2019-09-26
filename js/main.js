@@ -29,8 +29,12 @@ var NAMES = [
   'Фиби Буффе',
   'Чендлер Бинг'
 ];
+var COMMENT_COUNT = BIG_PICTURE.querySelector('.social__comment-count');
+var NEW_COMMENT_DOWNLOAD = BIG_PICTURE.querySelector('.comments-loader');
 var photoList = [];
 var bigPhotoCommentList = BIG_PICTURE.querySelector('.social__comments');
+var readyComments = BIG_PICTURE.querySelectorAll('.social__comment');
+var readyComment = BIG_PICTURE.querySelector('.social__comment');
 
 // генерируем массив из N чисел, что бы не ручками
 var generateNumberList = function (ammount) {
@@ -141,20 +145,13 @@ var renderPhotos = function (array) {
 
 // подготовка комментария
 var prepareComment = function (comment) {
-  var li = document.createElement('li');
-  li.classList.add('social__comment');
-  bigPhotoCommentList.appendChild(li);
-  var img = document.createElement('img');
-  img.classList.add('social__picture');
-  img.src = comment.avatar;
-  img.width = 35;
-  img.height = 35;
-  img.alt = comment.name;
-  li.appendChild(img);
-  var p = document.createElement('p');
-  p.classList.add('social__text');
-  p.textContent = comment.message;
-  li.appendChild(p);
+  var newComment = readyComment.cloneNode(true);
+
+  newComment.querySelector('.social__picture').src = comment.avatar;
+  newComment.querySelector('.social__picture').alt = comment.name;
+  newComment.querySelector('.social__text').textContent = comment.message;
+
+  return newComment;
 };
 
 // вставка комментариев под фото
@@ -164,18 +161,19 @@ var renderCommentList = function (comments) {
     fragment.appendChild(prepareComment(item));
   });
 
-  bigPhotoCommentList.appendChild(fragment);
+  return bigPhotoCommentList.appendChild(fragment);
 };
 
 renderPhotos(generatePhotoList(AMMOUNT_OF_PHOTOS));
 
 // работа с большим фото
-BIG_PICTURE.classList.remove('hidden');
 BIG_PICTURE_IMAGE.querySelector('img').src = photoList[1].url;
 BIG_PICTURE.querySelector('.likes-count').textContent = photoList[1].likes;
 BIG_PICTURE.querySelector('.comments-count').textContent = photoList[1].comments.length;
 BIG_PICTURE.querySelector('.social__caption').textContent = photoList[1].description;
-
 renderCommentList(photoList[1].comments);
 
-console.log(photoList[1]);
+BIG_PICTURE.classList.remove('hidden');
+// прячем блоки подсчета комментариев и загрузки новых
+COMMENT_COUNT.classList.add('visually-hidden');
+NEW_COMMENT_DOWNLOAD.classList.add('visually-hidden');
