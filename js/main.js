@@ -33,7 +33,6 @@ var COMMENT_COUNT = BIG_PICTURE.querySelector('.social__comment-count');
 var NEW_COMMENT_DOWNLOAD = BIG_PICTURE.querySelector('.comments-loader');
 var photoList = [];
 var bigPhotoCommentList = BIG_PICTURE.querySelector('.social__comments');
-var readyComments = BIG_PICTURE.querySelectorAll('.social__comment');
 var readyComment = BIG_PICTURE.querySelector('.social__comment');
 
 // генерируем массив из N чисел, что бы не ручками
