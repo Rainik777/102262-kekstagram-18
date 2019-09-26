@@ -80,12 +80,11 @@ var getCommentMessage = function () {
 
 // создает объект комментарий
 var createComment = function () {
-  var names = cloneArray(NAMES);
   var avatarNumber = cloneArray(AVATAR_NUMBERS);
   var comment = {
     avatar: 'img/avatar-' + getRandomElement(avatarNumber) + '.svg',
     message: getCommentMessage(),
-    name: getRandomElement(names)
+    name: NAMES[Math.floor(Math.random() * array.length)]
   };
 
   return comment;
