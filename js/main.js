@@ -11,6 +11,8 @@ var MIN_COMMENTS = 1;
 var MAX_COMMENTS = 6;
 var MAX_COMMENT_LENGTH = 2;
 var MIN_COMMENT_LENGTH = 1;
+var BIG_PICTURE = document.querySelector('.big-picture');
+var BIG_PICTURE_IMAGE = BIG_PICTURE.querySelector('.big-picture__img');
 var COMMENTS = [
   'Всё отлично!',
   'В целом всё неплохо. Но не всё.',
@@ -27,7 +29,8 @@ var NAMES = [
   'Фиби Буффе',
   'Чендлер Бинг'
 ];
-
+var photoList = [];
+var bigPhotoCommentList = BIG_PICTURE.querySelector('.social__comments');
 
 // генерируем массив из N чисел, что бы не ручками
 var generateNumberList = function (ammount) {
@@ -84,7 +87,7 @@ var createComment = function () {
   var comment = {
     avatar: 'img/avatar-' + getRandomElement(avatarNumber) + '.svg',
     message: getCommentMessage(),
-    name: NAMES[Math.floor(Math.random() * array.length)]
+    name: NAMES[Math.floor(Math.random() * NAMES.length)]
   };
 
   return comment;
@@ -103,8 +106,6 @@ var fullCommentList = function (min, max) {
 
 // генерируем массив фоточек
 var generatePhotoList = function (ammount) {
-  var photoList = [];
-  // массив комментариев под фото
   for (var i = 0; i < ammount; i++) {
     // сама фоточка
     var photo = {
@@ -138,4 +139,43 @@ var renderPhotos = function (array) {
   PICTURES.appendChild(fragment);
 };
 
+// подготовка комментария
+var prepareComment = function (comment) {
+  var li = document.createElement('li');
+  li.classList.add('social__comment');
+  bigPhotoCommentList.appendChild(li);
+  var img = document.createElement('img');
+  img.classList.add('social__picture');
+  img.src = comment.avatar;
+  img.width = 35;
+  img.height = 35;
+  img.alt = comment.name;
+  li.appendChild(img);
+  var p = document.createElement('p');
+  p.classList.add('social__text');
+  p.textContent = comment.message;
+  li.appendChild(p);
+};
+
+// вставка комментариев под фото
+var renderCommentList = function (comments) {
+  var fragment = document.createDocumentFragment();
+  comments.forEach(function (item) {
+    fragment.appendChild(prepareComment(item));
+  });
+
+  bigPhotoCommentList.appendChild(fragment);
+};
+
 renderPhotos(generatePhotoList(AMMOUNT_OF_PHOTOS));
+
+// работа с большим фото
+BIG_PICTURE.classList.remove('hidden');
+BIG_PICTURE_IMAGE.querySelector('img').src = photoList[1].url;
+BIG_PICTURE.querySelector('.likes-count').textContent = photoList[1].likes;
+BIG_PICTURE.querySelector('.comments-count').textContent = photoList[1].comments.length;
+BIG_PICTURE.querySelector('.social__caption').textContent = photoList[1].description;
+
+renderCommentList(photoList[1].comments);
+
+console.log(photoList[1]);
