@@ -49,7 +49,12 @@ var generateNumberList = function (ammount) {
 var AVATAR_NUMBERS = generateNumberList(AMMOUNT_OF_AVATARS);
 var PHOTO_NUMBERS = generateNumberList(AMMOUNT_OF_PHOTOS);
 
-// генерируем количество лайков
+// простой рандом - выцепляет случайный элемент массива
+var getRandom = function (array) {
+  return array[Math.floor(Math.random() * array.length)];
+};
+
+// рандом между - для генерации количества лайков
 var getRandomBetween = function (min, max) {
   return Math.floor(Math.random() * (max - min) + min);
 };
@@ -90,7 +95,7 @@ var createComment = function () {
   var comment = {
     avatar: 'img/avatar-' + getRandomElement(avatarNumber) + '.svg',
     message: getCommentMessage(),
-    name: NAMES[Math.floor(Math.random() * NAMES.length)]
+    name: getRandom(NAMES)
   };
 
   return comment;
@@ -166,12 +171,15 @@ var renderCommentList = function (comments) {
 renderPhotos(generatePhotoList(AMMOUNT_OF_PHOTOS));
 
 // работа с большим фото
-BIG_PICTURE_IMAGE.querySelector('img').src = photoList[1].url;
-BIG_PICTURE.querySelector('.likes-count').textContent = photoList[1].likes;
-BIG_PICTURE.querySelector('.comments-count').textContent = photoList[1].comments.length;
-BIG_PICTURE.querySelector('.social__caption').textContent = photoList[1].description;
-renderCommentList(photoList[1].comments);
+var renderBigPicture = function () {
+  BIG_PICTURE_IMAGE.querySelector('img').src = photoList[1].url;
+  BIG_PICTURE.querySelector('.likes-count').textContent = photoList[1].likes;
+  BIG_PICTURE.querySelector('.comments-count').textContent = photoList[1].comments.length;
+  BIG_PICTURE.querySelector('.social__caption').textContent = photoList[1].description;
+  renderCommentList(photoList[1].comments);
+};
 
+renderBigPicture();
 BIG_PICTURE.classList.remove('hidden');
 // прячем блоки подсчета комментариев и загрузки новых
 COMMENT_COUNT.classList.add('visually-hidden');
