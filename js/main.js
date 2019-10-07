@@ -12,7 +12,11 @@ var MAX_COMMENTS = 6;
 var MAX_COMMENT_LENGTH = 2;
 var MIN_COMMENT_LENGTH = 1;
 var BIG_PICTURE = document.querySelector('.big-picture');
-var BIG_PICTURE_IMAGE = BIG_PICTURE.querySelector('.big-picture__img');
+var BIG_PICTURE_IMAGE = BIG_PICTURE.querySelector('.big-picture__img').querySelector('img');
+var BIG_PICTURE_LIKES = BIG_PICTURE.querySelector('.likes-count');
+var BIG_PICTURE_COMMENTS_AMMOUNT = BIG_PICTURE.querySelector('.comments-count');
+var BIG_PICTURE_DESCRIPION = BIG_PICTURE.querySelector('.social__caption');
+var BIG_PICTURE_COMMENTS = BIG_PICTURE.querySelector('.social__comments');
 var COMMENTS = [
   'Всё отлично!',
   'В целом всё неплохо. Но не всё.',
@@ -31,9 +35,8 @@ var NAMES = [
 ];
 var COMMENT_COUNT = BIG_PICTURE.querySelector('.social__comment-count');
 var NEW_COMMENT_DOWNLOAD = BIG_PICTURE.querySelector('.comments-loader');
-var photoList = [];
-var bigPhotoCommentList = BIG_PICTURE.querySelector('.social__comments');
-var readyComment = BIG_PICTURE.querySelector('.social__comment');
+// var photoList = [];
+var BIG_PICTURE_SINGLE_COMMENT = BIG_PICTURE.querySelector('.social__comment');
 
 // генерируем массив из N чисел, что бы не ручками
 var generateNumberList = function (ammount) {
@@ -114,8 +117,9 @@ var fullCommentList = function (min, max) {
 
 // генерируем массив фоточек
 var generatePhotoList = function (ammount) {
+  var photoList = [];
   for (var i = 0; i < ammount; i++) {
-    // сама фоточка
+  // сама фоточка
     var photo = {
       url: 'photos/' + getRandomElement(PHOTO_NUMBERS) + '.jpg',
       description: DESCRIPTION,
@@ -149,7 +153,7 @@ var renderPhotos = function (array) {
 
 // подготовка комментария
 var prepareComment = function (comment) {
-  var newComment = readyComment.cloneNode(true);
+  var newComment = BIG_PICTURE_SINGLE_COMMENT.cloneNode(true);
 
   newComment.querySelector('.social__picture').src = comment.avatar;
   newComment.querySelector('.social__picture').alt = comment.name;
@@ -165,22 +169,30 @@ var renderCommentList = function (comments) {
     fragment.appendChild(prepareComment(item));
   });
 
-  return bigPhotoCommentList.replaceWith(fragment);
+  return fragment;
 };
 
-renderPhotos(generatePhotoList(AMMOUNT_OF_PHOTOS));
+var photoList = generatePhotoList(AMMOUNT_OF_PHOTOS);
+
+renderPhotos(photoList);
 
 // работа с большим фото
 var renderBigPicture = function () {
-  BIG_PICTURE_IMAGE.querySelector('img').src = photoList[1].url;
-  BIG_PICTURE.querySelector('.likes-count').textContent = photoList[1].likes;
-  BIG_PICTURE.querySelector('.comments-count').textContent = photoList[1].comments.length;
-  BIG_PICTURE.querySelector('.social__caption').textContent = photoList[1].description;
-  renderCommentList(photoList[1].comments);
+  BIG_PICTURE_IMAGE.src = photoList[3].url;
+  BIG_PICTURE_LIKES.textContent = photoList[3].likes;
+  BIG_PICTURE_COMMENTS_AMMOUNT.textContent = photoList[3].comments.length;
+  BIG_PICTURE_DESCRIPION.textContent = photoList[3].description;
+  BIG_PICTURE_COMMENTS.replaceWith(renderCommentList(photoList[3].comments));
 };
 
 renderBigPicture();
-BIG_PICTURE.classList.remove('hidden');
-// прячем блоки подсчета комментариев и загрузки новых
-COMMENT_COUNT.classList.add('visually-hidden');
-NEW_COMMENT_DOWNLOAD.classList.add('visually-hidden');
+
+// прячем и вскрываем на странице что нужно
+var hideAndSeek = function () {
+  BIG_PICTURE.classList.remove('hidden');
+  // прячем блоки подсчета комментариев и загрузки новых
+  COMMENT_COUNT.classList.add('visually-hidden');
+  NEW_COMMENT_DOWNLOAD.classList.add('visually-hidden');
+};
+
+hideAndSeek();
