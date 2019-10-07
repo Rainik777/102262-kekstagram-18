@@ -165,7 +165,7 @@ var renderCommentList = function (comments) {
     fragment.appendChild(prepareComment(item));
   });
 
-  return bigPhotoCommentList.appendChild(fragment);
+  return bigPhotoCommentList.replaceWith(fragment);
 };
 
 renderPhotos(generatePhotoList(AMMOUNT_OF_PHOTOS));
