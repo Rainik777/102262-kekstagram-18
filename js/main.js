@@ -132,6 +132,8 @@ var generatePhotoList = function (ammount) {
   return photoList;
 };
 
+var photoList = generatePhotoList(AMMOUNT_OF_PHOTOS);
+
 var preparePhotoElement = function (foto) {
   var photoElement = PICTURE_TEMPLATE.cloneNode(true);
 
@@ -140,15 +142,6 @@ var preparePhotoElement = function (foto) {
   photoElement.querySelector('.picture__comments').textContent = foto.comments.length;
 
   return photoElement;
-};
-
-var renderPhotos = function (array) {
-  var fragment = document.createDocumentFragment();
-  array.forEach(function (item) {
-    fragment.appendChild(preparePhotoElement(item));
-  });
-
-  PICTURES.appendChild(fragment);
 };
 
 // подготовка комментария
@@ -162,19 +155,15 @@ var prepareComment = function (comment) {
   return newComment;
 };
 
-// вставка комментариев под фото
-var renderCommentList = function (comments) {
+// создание фрагмента
+var fillFragment = function (array, func) {
   var fragment = document.createDocumentFragment();
-  comments.forEach(function (item) {
-    fragment.appendChild(prepareComment(item));
+  array.forEach(function (item) {
+    fragment.appendChild(func(item));
   });
 
   return fragment;
 };
-
-var photoList = generatePhotoList(AMMOUNT_OF_PHOTOS);
-
-renderPhotos(photoList);
 
 // работа с большим фото
 var renderBigPicture = function () {
@@ -182,10 +171,8 @@ var renderBigPicture = function () {
   BIG_PICTURE_LIKES.textContent = photoList[3].likes;
   BIG_PICTURE_COMMENTS_AMMOUNT.textContent = photoList[3].comments.length;
   BIG_PICTURE_DESCRIPION.textContent = photoList[3].description;
-  BIG_PICTURE_COMMENTS.replaceWith(renderCommentList(photoList[3].comments));
+  BIG_PICTURE_COMMENTS.replaceWith(fillFragment(photoList[3].comments, prepareComment));
 };
-
-renderBigPicture();
 
 // прячем и вскрываем на странице что нужно
 var hideAndSeek = function () {
@@ -195,4 +182,13 @@ var hideAndSeek = function () {
   NEW_COMMENT_DOWNLOAD.classList.add('visually-hidden');
 };
 
-hideAndSeek();
+var main = function () {
+  // отрисовка фоточек на главной
+  PICTURES.appendChild(fillFragment(photoList, preparePhotoElement));
+
+  renderBigPicture();
+  hideAndSeek();
+};
+
+main();
+
