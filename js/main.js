@@ -176,7 +176,7 @@ var renderBigPicture = function () {
 
 // прячем и вскрываем на странице что нужно
 var hideAndSeek = function () {
-  BIG_PICTURE.classList.remove('hidden');
+  // BIG_PICTURE.classList.remove('hidden'); /* временно прячем большую картинку */
   // прячем блоки подсчета комментариев и загрузки новых
   COMMENT_COUNT.classList.add('visually-hidden');
   NEW_COMMENT_DOWNLOAD.classList.add('visually-hidden');
