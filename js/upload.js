@@ -55,6 +55,31 @@
   SLIDER_PIN.addEventListener('mousemove', function (evt) {
     var startClientX = evt.clientX;
 
+    var onMouseMove = function (moveEvt) {
+      moveEvt.preventDefault();
 
+      var clientXmin = 595;
+      var clientXmax = 1045;
+      var x = startClientX - moveEvt.ClientX;
+
+      console.log(x);
+
+      var clientXcurrent = Math.floor((evt.clientX - clientXmin) * 100 / (clientXmax - clientXmin)) + x;
+
+      SLIDER_PIN.style.left = clientXcurrent  + '%';
+      SLIDER_LINE.style.width = clientXcurrent + '%';
+
+      setupSliderPosition(moveEvt);
+    };
+
+    var onMouseUp = function (upEvt) {
+      upEvt.preventDefault();
+
+      SLIDER_PIN.removeEventListener('mousemove', onMouseMove);
+      SLIDER_PIN.removeEventListener('mouseup', onMouseUp);
+    };
+
+    SLIDER_PIN.addEventListener('mousemove', onMouseMove);
+    SLIDER_PIN.addEventListener('mouseup', onMouseUp);
   });
 })();
