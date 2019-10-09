@@ -25,17 +25,13 @@
     document.removeEventListener('keydown', onImgSetupEscPress);
   };
 
-  var setupSliderPosition = function (evt) {
+  var setupSliderPosition  = function (evt) {
     var clientXmin = 595;
     var clientXmax = 1045;
     var clientXcurrent = Math.floor((evt.clientX - clientXmin) * 100 / (clientXmax - clientXmin));
     SLIDER_PIN.style.left = clientXcurrent + '%';
     SLIDER_LINE.style.width = clientXcurrent + '%';
     console.log(clientXcurrent);
-  }
-
-  var touchSliderBlock = function (evt) {
-    setupSliderPosition(evt);
   };
 
   /* var sliderEffect = function () {
@@ -50,10 +46,12 @@
   // ЗАКРЫВАЕМ блок редактирования изображения
   BTN_CLOSE_IMG_SETUP.addEventListener('click', closeImgSetup);
 
-  SLIDER_BLOCK.addEventListener('click', touchSliderBlock);
+  SLIDER_BLOCK.addEventListener('click', setupSliderPosition);
 
-  SLIDER_PIN.addEventListener('mousemove', function (evt) {
+  SLIDER_PIN.addEventListener('mousedown', function (evt) {
     var startClientX = evt.clientX;
+
+    console.log(startClientX);
 
     var onMouseMove = function (moveEvt) {
       moveEvt.preventDefault();
@@ -64,7 +62,7 @@
 
       console.log(x);
 
-      var clientXcurrent = Math.floor((evt.clientX - clientXmin) * 100 / (clientXmax - clientXmin)) + x;
+      var clientXcurrent = Math.floor((evt.clientX - clientXmin + x) * 100 / (clientXmax - clientXmin));
 
       SLIDER_PIN.style.left = clientXcurrent  + '%';
       SLIDER_LINE.style.width = clientXcurrent + '%';
