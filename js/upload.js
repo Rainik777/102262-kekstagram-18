@@ -8,6 +8,11 @@
   var SLIDER_PIN = IMG_SETUP.querySelector('.effect-level__pin');
   var SLIDER_LINE = IMG_SETUP.querySelector('.effect-level__depth');
   var SLIDER_BLOCK = IMG_SETUP.querySelector('.effect-level__line');
+  var PIN_MIN_X = 595;
+  var PIN_MAX_X = 1045;
+  // var EFFECTS = IMG_SETUP.querySelectorAll('.effects__item');
+  // var IMG_PREVIEW = IMG_SETUP.querySelector('.img-upload__preview');
+  // var TAG_INPUT = IMG_SETUP.querySelector('input[name="hashtags"]');
 
   var onImgSetupEscPress = function (evt) {
     if (evt.keyCode === KEY_ESC) {
@@ -25,16 +30,18 @@
     document.removeEventListener('keydown', onImgSetupEscPress);
   };
 
-  var setupSliderPosition  = function (evt) {
-    var clientXmin = 595;
-    var clientXmax = 1045;
-    var clientXcurrent = Math.floor((evt.clientX - clientXmin) * 100 / (clientXmax - clientXmin));
+  var getSliderPosition  = function (clientX) {
+    var clientXcurrent = Math.floor((clientX - PIN_MIN_X) * 100 / (PIN_MAX_X - PIN_MIN_X));
     SLIDER_PIN.style.left = clientXcurrent + '%';
     SLIDER_LINE.style.width = clientXcurrent + '%';
-    console.log(clientXcurrent);
+    // console.log(clientXcurrent);
   };
 
-  /* var sliderEffect = function () {
+  var setupSliderPosition = function (evt) {
+    getSliderPosition(evt.clientX);
+  };
+
+ /* var sliderEffect = function () {
     ----- Здесь должна быть функция слайдера
   }; */
 
@@ -48,36 +55,33 @@
 
   SLIDER_BLOCK.addEventListener('click', setupSliderPosition);
 
+  // перемещение пина вслед за мышкой - НЕ РАБОТАЕТ
   SLIDER_PIN.addEventListener('mousedown', function (evt) {
+    evt.preventDefault();
     var startClientX = evt.clientX;
-
-    console.log(startClientX);
+    console.log('mousedown' + ' ' + startClientX);
 
     var onMouseMove = function (moveEvt) {
       moveEvt.preventDefault();
+      var shiftClientX = startClientX - moveEvt.clientX;
+      startClientX = moveEvt.clientX;
 
-      var clientXmin = 595;
-      var clientXmax = 1045;
-      var x = startClientX - moveEvt.ClientX;
-
-      console.log(x);
-
-      var clientXcurrent = Math.floor((evt.clientX - clientXmin + x) * 100 / (clientXmax - clientXmin));
-
-      SLIDER_PIN.style.left = clientXcurrent  + '%';
-      SLIDER_LINE.style.width = clientXcurrent + '%';
-
-      setupSliderPosition(moveEvt);
+      SLIDER_PIN.style.left = (SLIDER_PIN.offsetLeft - shiftClientX) + 'px';
     };
 
     var onMouseUp = function (upEvt) {
       upEvt.preventDefault();
 
-      SLIDER_PIN.removeEventListener('mousemove', onMouseMove);
-      SLIDER_PIN.removeEventListener('mouseup', onMouseUp);
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
     };
 
-    SLIDER_PIN.addEventListener('mousemove', onMouseMove);
-    SLIDER_PIN.addEventListener('mouseup', onMouseUp);
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
   });
+
+  // валидация хештегов
+
+  // наложение эффектов на изображение
+
 })();
