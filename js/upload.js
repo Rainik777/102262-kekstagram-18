@@ -67,6 +67,7 @@
 
       SLIDER_PIN.style.left = (SLIDER_PIN.offsetLeft - shiftClientX) + 'px';
       SLIDER_LINE.style.width = (SLIDER_PIN.offsetLeft - shiftClientX) + 'px';
+      console.log(moveEvt.clientX);
     };
 
     var onMouseUp = function (upEvt) {
