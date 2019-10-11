@@ -1,194 +1,79 @@
 'use strict';
+(function () {
+  var VISUALLY_HIDDEN_CLASS = 'visually-hidden';
 
-var PICTURE_TEMPLATE = document.querySelector('#picture').content.querySelector('.picture');
-var PICTURES = document.querySelector('.pictures');
-var AMMOUNT_OF_PHOTOS = 25;
-var AMMOUNT_OF_AVATARS = 6;
-var DESCRIPTION = 'описание фотографии';
-var MIN_LIKES = 15;
-var MAX_LIKES = 200;
-var MIN_COMMENTS = 1;
-var MAX_COMMENTS = 6;
-var MAX_COMMENT_LENGTH = 2;
-var MIN_COMMENT_LENGTH = 1;
-var BIG_PICTURE = document.querySelector('.big-picture');
-var BIG_PICTURE_IMAGE = BIG_PICTURE.querySelector('.big-picture__img').querySelector('img');
-var BIG_PICTURE_LIKES = BIG_PICTURE.querySelector('.likes-count');
-var BIG_PICTURE_COMMENTS_AMMOUNT = BIG_PICTURE.querySelector('.comments-count');
-var BIG_PICTURE_DESCRIPION = BIG_PICTURE.querySelector('.social__caption');
-var BIG_PICTURE_COMMENTS = BIG_PICTURE.querySelector('.social__comments');
-var COMMENTS = [
-  'Всё отлично!',
-  'В целом всё неплохо. Но не всё.',
-  'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.',
-  'Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.',
-  'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
-  'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
-];
-var NAMES = [
-  'Росс Геллер',
-  'Моника Геллер',
-  'Джоуи Триббиани',
-  'Рейчел Грин',
-  'Фиби Буффе',
-  'Чендлер Бинг'
-];
-var COMMENT_COUNT = BIG_PICTURE.querySelector('.social__comment-count');
-var NEW_COMMENT_DOWNLOAD = BIG_PICTURE.querySelector('.comments-loader');
-// var photoList = [];
-var BIG_PICTURE_SINGLE_COMMENT = BIG_PICTURE.querySelector('.social__comment');
+  var PICTURES = document.querySelector('.pictures');
+  var PICTURE_TEMPLATE = document.querySelector('#picture').content.querySelector('.picture');
+  var BIG_PICTURE = document.querySelector('.big-picture');
+  var NEW_COMMENT_DOWNLOAD = BIG_PICTURE.querySelector('.comments-loader');
+  var COMMENT_COUNT = BIG_PICTURE.querySelector('.social__comment-count');
+  var BIG_PICTURE_IMAGE = BIG_PICTURE.querySelector('.big-picture__img').querySelector('img');
+  var BIG_PICTURE_LIKES = BIG_PICTURE.querySelector('.likes-count');
+  var BIG_PICTURE_COMMENTS_AMMOUNT = BIG_PICTURE.querySelector('.comments-count');
+  var BIG_PICTURE_SINGLE_COMMENT = BIG_PICTURE.querySelector('.social__comment');
+  var BIG_PICTURE_DESCRIPION = BIG_PICTURE.querySelector('.social__caption');
+  var BIG_PICTURE_COMMENTS = BIG_PICTURE.querySelector('.social__comments');
 
-// генерируем массив из N чисел, что бы не ручками
-var generateNumberList = function (ammount) {
-  var numbers = [];
-  for (var i = 1; i <= ammount; i++) {
-    numbers.push(i);
-  }
+  var preparePhoto = function (photo) {
+    var photoElement = PICTURE_TEMPLATE.cloneNode(true);
 
-  return numbers;
-};
+    photoElement.querySelector('.picture__img').src = photo.url;
+    photoElement.querySelector('.picture__img').alt = photo.description;
+    photoElement.querySelector('.picture__likes').textContent = photo.likes;
+    photoElement.querySelector('.picture__comments').textContent = photo.comments.length;
 
-// массивы номеров для аваторов и фоточек
-var AVATAR_NUMBERS = generateNumberList(AMMOUNT_OF_AVATARS);
-var PHOTO_NUMBERS = generateNumberList(AMMOUNT_OF_PHOTOS);
-
-// простой рандом - выцепляет случайный элемент массива
-var getRandom = function (array) {
-  return array[Math.floor(Math.random() * array.length)];
-};
-
-// рандом между - для генерации количества лайков
-var getRandomBetween = function (min, max) {
-  return Math.floor(Math.random() * (max - min) + min);
-};
-
-// клонируем переданный массив
-var cloneArray = function (array) {
-  return array.slice();
-};
-
-// берем случайный элемент массива без повторов
-var getRandomElement = function (array) {
-  return array.splice(Math.floor(Math.random() * array.length), 1);
-};
-
-// правда или ложь --- про запас, на случай альтернативной реализации
-// var trueOrFalse = function () {
-//   return Math.random() >= 0.5;
-// };
-
-// генерируем комментарий из массива комментраиев
-// --- TODO --- рассмотреть возможность украшения функции через filter, concat, slice --- TODO ---
-var getCommentMessage = function () {
-  var newCommentList = [];
-  var comments = cloneArray(COMMENTS);
-  var ammount = Math.floor(Math.random() * MAX_COMMENT_LENGTH + MIN_COMMENT_LENGTH);
-  for (var i = 0; i < ammount; i++) {
-    newCommentList.push(getRandomElement(comments));
-  }
-  // newCommentList.concat(arrayCloned.filter(trueOrFalse));
-  // newCommentList.slice(0, ammount).join(' ');
-
-  return newCommentList.join(' ');
-};
-
-// создает объект комментарий
-var createComment = function () {
-  var avatarNumber = cloneArray(AVATAR_NUMBERS);
-  var comment = {
-    avatar: 'img/avatar-' + getRandomElement(avatarNumber) + '.svg',
-    message: getCommentMessage(),
-    name: getRandom(NAMES)
+    return photoElement;
   };
 
-  return comment;
-};
+  // подготовка комментария
+  var prepareComment = function (comment) {
+    var newComment = BIG_PICTURE_SINGLE_COMMENT.cloneNode(true);
 
-// создает массив из объектов комментарий для размещения под фотографией
-var fullCommentList = function (min, max) {
-  var commentList = [];
-  var commentAmmount = Math.floor(Math.random() * (max - min) + min);
-  for (var i = 0; i < commentAmmount; i++) {
-    commentList.push(createComment());
-  }
+    newComment.querySelector('.social__picture').src = comment.avatar;
+    newComment.querySelector('.social__picture').alt = comment.name;
+    newComment.querySelector('.social__text').textContent = comment.message;
 
-  return commentList;
-};
+    return newComment;
+  };
 
-// генерируем массив фоточек
-var generatePhotoList = function (ammount) {
-  var photoList = [];
-  for (var i = 0; i < ammount; i++) {
-  // сама фоточка
-    var photo = {
-      url: 'photos/' + getRandomElement(PHOTO_NUMBERS) + '.jpg',
-      description: DESCRIPTION,
-      likes: getRandomBetween(MIN_LIKES, MAX_LIKES),
-      comments: fullCommentList(MIN_COMMENTS, MAX_COMMENTS)
-    };
-    photoList.push(photo);
-  }
-
-  return photoList;
-};
-
-var photoList = generatePhotoList(AMMOUNT_OF_PHOTOS);
-
-var preparePhotoElement = function (foto) {
-  var photoElement = PICTURE_TEMPLATE.cloneNode(true);
-
-  photoElement.querySelector('.picture__img').src = foto.url;
-  photoElement.querySelector('.picture__likes').textContent = foto.likes;
-  photoElement.querySelector('.picture__comments').textContent = foto.comments.length;
-
-  return photoElement;
-};
-
-// подготовка комментария
-var prepareComment = function (comment) {
-  var newComment = BIG_PICTURE_SINGLE_COMMENT.cloneNode(true);
-
-  newComment.querySelector('.social__picture').src = comment.avatar;
-  newComment.querySelector('.social__picture').alt = comment.name;
-  newComment.querySelector('.social__text').textContent = comment.message;
-
-  return newComment;
-};
-
-// создание фрагмента
-var fillFragment = function (array, func) {
-  var fragment = document.createDocumentFragment();
-  array.forEach(function (item) {
-    fragment.appendChild(func(item));
-  });
+  // создание фрагмента
+  var renderFragment = function (array, func) {
+    var fragment = document.createDocumentFragment();
+    array.forEach(function (item) {
+      fragment.appendChild(func(item));
+    });
 
   return fragment;
-};
+  };
 
-// работа с большим фото
-var renderBigPicture = function () {
-  BIG_PICTURE_IMAGE.src = photoList[3].url;
-  BIG_PICTURE_LIKES.textContent = photoList[3].likes;
-  BIG_PICTURE_COMMENTS_AMMOUNT.textContent = photoList[3].comments.length;
-  BIG_PICTURE_DESCRIPION.textContent = photoList[3].description;
-  BIG_PICTURE_COMMENTS.replaceWith(fillFragment(photoList[3].comments, prepareComment));
-};
+  var photoList = window.data.generatePhotoList(window.data.maxAmmountOfPhotos);
 
-// прячем и вскрываем на странице что нужно
-var hideAndSeek = function () {
-  // BIG_PICTURE.classList.remove('hidden'); /* временно прячем большую картинку */
-  // прячем блоки подсчета комментариев и загрузки новых
-  COMMENT_COUNT.classList.add('visually-hidden');
-  NEW_COMMENT_DOWNLOAD.classList.add('visually-hidden');
-};
+  // работа с большим фото
+  var renderBigPicture = function () {
+    BIG_PICTURE_IMAGE.src = photoList[3].url;
+    BIG_PICTURE_LIKES.textContent = photoList[3].likes;
+    BIG_PICTURE_COMMENTS_AMMOUNT.textContent = photoList[3].comments.length;
+    BIG_PICTURE_DESCRIPION.textContent = photoList[3].description;
+    BIG_PICTURE_COMMENTS.replaceWith(renderFragment(photoList[3].comments, prepareComment));
+  };
 
-var main = function () {
-  // отрисовка фоточек на главной
-  PICTURES.appendChild(fillFragment(photoList, preparePhotoElement));
+  // прячем и вскрываем на странице что нужно
+  var hideAndSeek = function () {
+    // BIG_PICTURE.classList.remove('hidden'); /* временно прячем большую картинку */
+    // прячем блоки подсчета комментариев и загрузки новых
+    COMMENT_COUNT.classList.add('visually-hidden');
+    NEW_COMMENT_DOWNLOAD.classList.add('visually-hidden');
+  };
 
-  renderBigPicture();
-  hideAndSeek();
-};
+  var main = function () {
+    // отрисовка фоточек на главной
+    PICTURES.appendChild(renderFragment(photoList, preparePhoto));
 
-main();
+    renderBigPicture();
+    hideAndSeek();
+  };
+
+  main();
+
+})();
 
