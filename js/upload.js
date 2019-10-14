@@ -142,11 +142,11 @@
     var bounds = EFFECT_SLIDER_BLOCK.getBoundingClientRect();
     var value = (event.clientX - bounds.left) / bounds.width * 100;
     setValue(value);
-  })
+  });
 
   EFFECT_IMG_NO_FILTER.addEventListener('click', function () {
-  IMG_PREVIEW.style.filter = 'none';
-  window.util.hide(EFFECT_SLIDER);
+    IMG_PREVIEW.style.filter = 'none';
+    window.util.hide(EFFECT_SLIDER);
   });
 
   HASHTAG_INPUT.addEventListener('change', function () {

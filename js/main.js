@@ -1,7 +1,5 @@
 'use strict';
 (function () {
-  var VISUALLY_HIDDEN_CLASS = 'visually-hidden';
-
   var PICTURES = document.querySelector('.pictures');
   var PICTURE_TEMPLATE = document.querySelector('#picture').content.querySelector('.picture');
   var BIG_PICTURE = document.querySelector('.big-picture');
@@ -43,7 +41,7 @@
       fragment.appendChild(func(item));
     });
 
-  return fragment;
+    return fragment;
   };
 
   var photoList = window.data.generatePhotoList(window.data.maxAmmountOfPhotos);

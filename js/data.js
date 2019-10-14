@@ -54,9 +54,9 @@
     return Math.floor(Math.random() * (max - min) + min);
   };
   // рандом не больше чем
-  var getRandomLessThan = function (max) {
+  /* var getRandomLessThan = function (max) {
     return Math.floor(Math.random() * max);
-  };
+  }; */
   // берем случайный элемент массива без повторов
   var getRandomElementNoRepeat = function (array) {
     return array.splice(Math.floor(Math.random() * array.length), 1);
@@ -72,8 +72,8 @@
       newCommentList.push(getRandomElementNoRepeat(comments));
     }
 
-  return newCommentList.join(' ');
-};
+    return newCommentList.join(' ');
+  };
 
   // создает объект комментарий
   var createSingleComment = function () {
