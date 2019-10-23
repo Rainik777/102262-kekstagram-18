@@ -3,7 +3,9 @@
 (function () {
 
   var FOTOS_COUNT = 25;
+
   var RANDOM_FOTOS_COUNT = 10;
+
   var MAX_DESCR_LENGTH = 140;
   var MAX_COMMENTS = 5;
 
@@ -14,6 +16,7 @@
 
   var userFotos = [];
   var userPictures = null;
+
 
   // нефильтрованные данные с сервера
   window.data = null;
@@ -160,6 +163,70 @@
     showMessage();
     loadFotosData(data);
     closeMessage();
+
+  var errorTempl = document.querySelector('#error')
+  .content
+  .querySelector('.error');
+
+  var successTempl = document.querySelector('#success')
+  .content
+  .querySelector('.success');
+
+  var closeErrorSection = function (evt) {
+    var error = document.querySelector('.error');
+    var errorButton = document.querySelector('.error__buttons:last-child');
+    if (evt.target === error ||
+      (evt.target === errorButton) || (evt.keyCode === window.DOM_VK.esc)) {
+      error.remove();
+      document.removeEventListener('click', closeErrorSection);
+      evt.stopPropagation();
+    }
+  };
+
+  var closeErrorSectionOnEsc = function (evt) {
+    if (evt.keyCode === window.DOM_VK.esc) {
+      closeErrorSection(evt);
+      document.removeEventListener('keydown', closeErrorSectionOnEsc);
+    }
+  };
+
+  // показываем окно с ошибкой загоузки с сервера
+  var showError = function (message) {
+    var errorSection = errorTempl.cloneNode(true);
+    errorSection.querySelector('.error__title').textContent = 'Ошибка загрузки файла: ' + message;
+    document.body.insertAdjacentElement('afterbegin', errorSection);
+    document.addEventListener('click', closeErrorSection);
+    document.addEventListener('keydown', closeErrorSectionOnEsc);
+  };
+
+  var closeSuccessSection = function (evt) {
+    var success = document.querySelector('.success');
+    var successButton = document.querySelector('.success__button');
+    if (evt.target === success ||
+      (evt.target === successButton) || (evt.keyCode === window.DOM_VK.esc)) {
+      success.remove();
+      document.removeEventListener('click', closeSuccessSection);
+      evt.stopPropagation();
+    }
+  };
+
+  var closeSuccessSectionOnEsc = function (evt) {
+    if (evt.keyCode === window.DOM_VK.esc) {
+      closeSuccessSection(evt);
+      document.removeEventListener('keydown', closeSuccessSectionOnEsc);
+    }
+  };
+
+  // показываем окно после успешной загрузки фотографий с сервера
+  window.showSuccess = function () {
+    var successSection = successTempl.cloneNode(true);
+    document.body.insertAdjacentElement('afterbegin', successSection);
+    document.addEventListener('click', closeSuccessSection);
+    document.addEventListener('keydown', closeSuccessSectionOnEsc);
+  };
+
+  var onLoad = function (data) {
+    loadFotosData(data);
     window.showSuccess();
   };
 
@@ -209,7 +276,9 @@
       fotoInfo.description = data[i].description;
       fotoInfo.likes = data[i].likes;
       fotoInfo.comments = [];
+
       fotoInfo.maxComments = data[i].comments.length;
+
       for (var j = 0; j < data[i].comments.length; j++) {
         fotoInfo.comments[j] = createComment(data[i].comments[j]);
         if (j === MAX_COMMENTS - 1) {
@@ -224,7 +293,11 @@
       fragment.appendChild(createPicture(foto));
     });
 
+
     picturesBlock = document.querySelector('.pictures');
+
+    var picturesBlock = document.querySelector('.pictures');
+
     picturesBlock.appendChild(fragment);
     userPictures = document.querySelectorAll('.picture');
 
@@ -241,7 +314,11 @@
     var pictureElem = pictureTempl.cloneNode(true);
     pictureElem.querySelector('.picture__img').src = foto.url;
     pictureElem.querySelector('.picture__likes').textContent = foto.likes;
+
     pictureElem.querySelector('.picture__comments').textContent = foto.maxComments;
+
+    pictureElem.querySelector('.picture__comments').textContent = foto.comments.length;
+
     return pictureElem;
   };
 
