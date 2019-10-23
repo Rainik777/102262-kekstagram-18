@@ -279,7 +279,7 @@
     });
     commentsBlock.appendChild(fragment);
 
-    // показ элемента .big-picture
+    // показ элемента большая картинка
     window.bigPicturePopup.classList.remove('hidden');
     document.addEventListener('keydown', window.onPopupPressEsc);
   };
