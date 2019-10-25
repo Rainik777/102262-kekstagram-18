@@ -1,198 +1,148 @@
-// effects.js
 'use strict';
 
 (function () {
-  var SCALE_STEP = 25;
-  var MAX_SCALE_VALUE = 100;
-
-  var effectStyles = [
-    {
-      name: 'none',
-      filter: ''
-    },
-    {
-      name: 'chrome',
-      filter: 'grayscale',
-      min: 0,
-      max: 1.0,
-      suff: ''
-    },
-    {
-      name: 'sepia',
-      filter: 'sepia',
-      min: 0,
-      max: 1.0,
-      suff: ''
-    },
-    {
-      name: 'marvin',
-      filter: 'invert',
-      min: 0,
-      max: 100,
-      suff: '%'
-    },
-    {
-      name: 'phobos',
-      filter: 'blur',
-      min: 0,
-      max: 3,
-      suff: 'px'
-    },
-    {
-      name: 'heat',
-      filter: 'brightness',
-      min: 1.0,
-      max: 3.0,
-      suff: ''
+  var picture = document.querySelector('.img-upload__preview');
+  // Передвижение ползунка
+  var effectLevel = document.querySelector('.img-upload__effect-level');
+  var line = document.querySelector('.effect-level__line');
+  var depth = document.querySelector('.effect-level__depth');
+  var pin = document.querySelector('.effect-level__pin');
+  // Наложение эффекта на фотографию
+  var effects = document.querySelectorAll('input[name="effect"]');
+  // Масштаб изображения
+  var scaleControl = document.querySelector('.scale__control--value');
+  var smallControl = document.querySelector('.scale__control--smaller');
+  var bigControl = document.querySelector('.scale__control--bigger');
+  var effectNames = [];
+  // Уровень эффекта
+  var togglePictureLevel = function (isHide) {
+    if (isHide) {
+      effectLevel.style.display = 'none';
+      return;
     }
-  ];
-
-  // показ окна редактирования изображения
-  var imgUploadPopup = document.querySelector('.img-upload__overlay');
-  var slider = imgUploadPopup.querySelector('.effect-level');
-  // кнопки масштабирования
-  var smallerScaleButton = imgUploadPopup.querySelector('.scale__control--smaller');
-  var biggerScaleButton = imgUploadPopup.querySelector('.scale__control--bigger');
-  // текущий эффект
-  window.currentEffect = 'none';
-  // убираем слайдер
-  slider.classList.add('hidden');
-
-  var sliderInfo = {
-    // объект слайдер
-    sliderObj: slider,
-    // пин слайдера уровня насыщенности эффекта
-    pinObj: slider.querySelector('.effect-level__pin'),
-    // полоска слайдера уровня насыщенности эффекта
-    depthObj: slider.querySelector('.effect-level__depth'),
-    // числовое значение слайдера
-    valueObj: slider.querySelector('.effect-level__value')
+    effectLevel.style.display = null;
+    var defaultWidth = line.getBoundingClientRect().width;
+    depth.style.width = defaultWidth + 'px';
+    pin.style.left = defaultWidth + 'px';
   };
-
-  var callBackSliderFunc = function (sliderData) {
-    if (!(sliderData === null)) {
-      sliderData.sliderObj = sliderInfo.sliderObj;
-      sliderData.pinObj = sliderInfo.pinObj;
-      sliderData.depthObj = sliderInfo.depthObj;
-      sliderData.valueObj = sliderInfo.valueObj;
-    } else {
-      if (!(window.currentEffect === 'none')) {
-        // применим эффект
-        var preview = imgUploadPopup.querySelector('.img-upload__preview');
-        var effectStyle = effectStyles[0];
-        for (var j = 0; j < effectStyles.length; j++) {
-          if (effectStyles[j].name === window.currentEffect) {
-            effectStyle = effectStyles[j];
-            break;
-          }
-        }
-        var sliderPos = sliderInfo.valueObj.value;
-        var filterStep = (effectStyle.max - effectStyle.min) * sliderPos / 100;
-        var filterValue = effectStyle.min + filterStep;
-        if (effectStyle.max > 1) {
-          filterValue = Math.ceil(filterValue);
-        }
-        sliderInfo.valueObj.value = filterValue.toString();
-        // откорректируем фильтр в CSS
-        var filter = effectStyle.filter + '(' + filterValue.toString() + effectStyle.suff + ')';
-        preview.style.filter = filter;
-      }
-    }
-  };
-
-  // инициализация слайдера
-  window.initSlider(callBackSliderFunc);
-
-  //
-  // определение выбранного эффекта
-  //
-  var getEffect = function (evt) {
-    if (evt.target.classList.contains('effects__radio')) {
-      return evt.target.value;
-    }
-    return null;
-  };
-
-  var setEffect = function (evt) {
-    var effect = getEffect(evt);
-    if (effect === null) {
-      // обходим span
-      return null;
-    }
-    var effectStyle = effectStyles[0];
-    for (var j = 0; j < effectStyles.length; j++) {
-      if (effectStyles[j].name === effect) {
-        effectStyle = effectStyles[j];
+  var setEffectLevel = function (effectName, scale) {
+    var pictureStyle = null;
+    switch (effectName) {
+      case 'chrome':
+        pictureStyle = window.constants.EFFECT_STYLES[effectName] + '(' + scale + ')';
         break;
-      }
+      case 'sepia':
+        pictureStyle = window.constants.EFFECT_STYLES[effectName] + '(' + scale + ')';
+        break;
+      case 'marvin':
+        scale *= window.constants.EFFECT_COEFFECENTS[effectName];
+        pictureStyle = window.constants.EFFECT_STYLES[effectName] + '(' + scale + '%)';
+        break;
+      case 'phobos':
+        scale *= window.constants.EFFECT_COEFFECENTS[effectName];
+        pictureStyle = window.constants.EFFECT_STYLES[effectName] + '(' + scale + 'px)';
+        break;
+      case 'heat':
+        scale *= window.constants.EFFECT_COEFFECENTS[effectName];
+        pictureStyle = window.constants.EFFECT_STYLES[effectName] + '(' + scale + ')';
+        break;
     }
+    picture.style.filter = pictureStyle;
+  };
+  // Поползновения ползунка
+  pin.addEventListener('mousedown', function (evt) {
+    evt.preventDefault();
+    var startX = evt.clientX;
+    var minimalX = startX - depth.getBoundingClientRect().width;
+    var maxWidth = parseInt(line.getBoundingClientRect().width, 10);
+    var maximalX = minimalX + maxWidth;
 
-    var preview = imgUploadPopup.querySelector('.img-upload__preview');
-    if (!(window.currentEffect === 'none')) {
-      // удалим предыдущий фильтр из списка классов
-      var effectClass = 'effects__preview--' + window.currentEffect;
-      if (preview.classList.contains(effectClass)) {
-        preview.classList.remove(effectClass);
+    var onMouseMove = function (moveEvt) {
+      moveEvt.preventDefault();
+      var currentX = moveEvt.clientX;
+
+      var offset = currentX - minimalX;
+      if (currentX <= minimalX) {
+        offset = 0;
       }
-    }
-    if (effectStyle.name === 'none') {
-      // устанавливаем начальное значение ползунка
-      window.resetSlider();
-      // скрываем слайдер
-      if (!slider.classList.contains('hidden')) {
-        slider.classList.add('hidden');
+      if (currentX >= maximalX) {
+        offset = maxWidth;
       }
-      preview.style.filter = '';
-    } else {
-      // показываем слайдер
-      if (slider.classList.contains('hidden')) {
-        slider.classList.remove('hidden');
+
+      depth.style.width = offset + 'px';
+      pin.style.left = offset + 'px';
+
+      var scale = depth.getBoundingClientRect().width / line.getBoundingClientRect().width;
+      var currentEffect = document.querySelector('.effects__radio:checked').value;
+
+      setEffectLevel(currentEffect, scale);
+    };
+
+    var onMouseUp = function (upEvt) {
+      upEvt.preventDefault();
+
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+    };
+
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+  });
+
+  var setActiveEffect = function (nameEffect) {
+    setEffectLevel(nameEffect, window.constants.DEFAULT_EFFECT_VALUES[nameEffect]);
+
+    togglePictureLevel(nameEffect === window.constants.DEFAULT_EFFECT);
+
+    effectNames.forEach(function (effect) {
+      if (effect === nameEffect) {
+        picture.classList.toggle(window.constants.PREFIX + nameEffect);
+      } else {
+        picture.classList.remove(window.constants.PREFIX + effect);
       }
-      // добавляем фильтр с список классов
-      effectClass = 'effects__preview--' + effect;
-      preview.classList.add(effectClass);
-      // добавляем фильтр в CSS
-      preview.style.filter = effectStyle.filter + '(' + effectStyle.min.toString() + effectStyle.suff + ')';
-      // устанавливаем начальное значение ползунка
-      window.resetSlider();
-    }
-    return effect;
+    });
   };
 
-  imgUploadPopup.querySelector('.effects__list').addEventListener('click', function (evt) {
-    var effect = setEffect(evt);
-    if (!(effect === null)) {
-      window.currentEffect = effect;
-    }
-  });
-  //
-  // обработка изменения масштаба
-  //
-  var scaleHandler = function (evt) {
-    var valueElem = imgUploadPopup.querySelector('.scale__control--value');
-    var scale = parseInt(valueElem.value.slice(0, valueElem.value.length - 1), 10);
-    if (evt.target === smallerScaleButton) {
-      scale -= SCALE_STEP;
-      if (scale < SCALE_STEP) {
-        scale = SCALE_STEP;
-      }
-    } else if (evt.target === biggerScaleButton) {
-      scale += SCALE_STEP;
-      if (scale > MAX_SCALE_VALUE) {
-        scale = MAX_SCALE_VALUE;
-      }
-    }
-    valueElem.value = scale.toString() + '%';
-    var fScale = scale / 100.0;
-    imgUploadPopup.querySelector('.img-upload__preview').style.transform = 'scale(' + fScale.toString() + ')';
+  var applyEffect = function (evt) {
+    var currentName = evt.target.value;
+    setActiveEffect(currentName);
   };
 
-  smallerScaleButton.addEventListener('click', function (evt) {
-    scaleHandler(evt);
+  effects.forEach(function (effect) {
+    effectNames.push(effect.value);
+    effect.addEventListener('click', applyEffect);
   });
 
-  biggerScaleButton.addEventListener('click', function (evt) {
-    scaleHandler(evt);
+  var setDefaultPicture = function () {
+    var defaultInput = document.querySelector('#effect-' + window.constants.DEFAULT_EFFECT);
+    defaultInput.checked = true;
+    setActiveEffect(window.constants.DEFAULT_EFFECT);
+  };
+
+  var resizePicture = function (sign) {
+    var currentValue = parseInt(scaleControl.value.replace('%', ''), 10);
+    var newValue = currentValue + window.constants.STEP * sign;
+    if (newValue <= window.constants.MAX_PICTURE_SIZE && newValue >= window.constants.MIN_PICTURE_SIZE) {
+      scaleControl.value = newValue + '%';
+      picture.style.transform = 'scale(' + (newValue / window.constants.PICTURE_RESIZE_PERCENT) + ')';
+    }
+  };
+
+  smallControl.addEventListener('click', function (evt) {
+    evt.preventDefault();
+    resizePicture(-1);
   });
+
+  bigControl.addEventListener('click', function (evt) {
+    evt.preventDefault();
+    resizePicture(1);
+  });
+
+  window.effects = {
+    togglePictureLevel: togglePictureLevel,
+    setDefaultPicture: setDefaultPicture,
+    scaleControl: scaleControl,
+    picture: picture
+  };
 
 })();

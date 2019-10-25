@@ -1,0 +1,82 @@
+'use strict';
+
+(function () {
+
+  var BUTTON_ESC = 27;
+  var BUTTON_ENTER = 13;
+  var LOAD_PHOTOS_URL = 'https://js.dump.academy/kekstagram/data';
+  var UPLOAD_PHOTOS_URL = 'https://js.dump.academy/kekstagram';
+  var PICTURES_ON_PAGE = 25;
+  var PICTURES_RANDOM = 10;
+  var TIMEOUT_DRAW_PICTURES = 500;
+  var PICTURE_DEFAULT_SIZE = 100;
+  var MIN_TEGS_LENGTH = 1;
+  var MAX_TEGS_LENGTH = 20;
+  var MAX_TEGS = 5;
+  var PREFIX = 'effects__preview--';
+  var DEFAULT_EFFECT = 'none';
+  var STEP = 25;
+  var MIN_PICTURE_SIZE = 25;
+  var MAX_PICTURE_SIZE = 100;
+  var ACTIVE_CLASS_FILTER = 'img-filters__button--active';
+  var COMMENTS_SHOW_STEP = 5;
+  var COMMENTS_SHOW = 5;
+  var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
+  var SUCCESS_STATUS_CODE = 200;
+  var XHR_TIMEOUT_REQUEST = 3000;
+  var PICTURE_RESIZE_PERCENT = 100;
+  var COMMET_MAX_LENGTH = 140;
+  var DEFAULT_EFFECT_VALUES = {
+    'chrome': 1,
+    'sepia': 1,
+    'marvin': 100,
+    'heat': 3,
+    'phobos': 3,
+  };
+  var EFFECT_COEFFECENTS = {
+    'marvin': 100,
+    'phobos': 3,
+    'heat': 3,
+  };
+  var EFFECT_STYLES = {
+    'chrome': 'grayscale',
+    'sepia': 'sepia',
+    'marvin': 'invert',
+    'phobos': 'blur',
+    'heat': 'brightness',
+  };
+  var BORDER_RED = 'border: 3px solid red;';
+  var BORDER_NO = 'border: none;';
+
+  window.constants = {
+    BUTTON_ESC: BUTTON_ESC,
+    LOAD_PHOTOS_URL: LOAD_PHOTOS_URL,
+    UPLOAD_PHOTOS_URL: UPLOAD_PHOTOS_URL,
+    PICTURES_ON_PAGE: PICTURES_ON_PAGE,
+    PICTURES_RANDOM: PICTURES_RANDOM,
+    TIMEOUT_DRAW_PICTURES: TIMEOUT_DRAW_PICTURES,
+    PICTURE_DEFAULT_SIZE: PICTURE_DEFAULT_SIZE,
+    MIN_TEGS_LENGTH: MIN_TEGS_LENGTH,
+    MAX_TEGS_LENGTH: MAX_TEGS_LENGTH,
+    MAX_TEGS: MAX_TEGS,
+    PREFIX: PREFIX,
+    DEFAULT_EFFECT: DEFAULT_EFFECT,
+    STEP: STEP,
+    MIN_PICTURE_SIZE: MIN_PICTURE_SIZE,
+    MAX_PICTURE_SIZE: MAX_PICTURE_SIZE,
+    ACTIVE_CLASS_FILTER: ACTIVE_CLASS_FILTER,
+    COMMENTS_SHOW_STEP: COMMENTS_SHOW_STEP,
+    COMMENTS_SHOW: COMMENTS_SHOW,
+    FILE_TYPES: FILE_TYPES,
+    BUTTON_ENTER: BUTTON_ENTER,
+    SUCCESS_STATUS_CODE: SUCCESS_STATUS_CODE,
+    XHR_TIMEOUT_REQUEST: XHR_TIMEOUT_REQUEST,
+    PICTURE_RESIZE_PERCENT: PICTURE_RESIZE_PERCENT,
+    COMMET_MAX_LENGTH: COMMET_MAX_LENGTH,
+    DEFAULT_EFFECT_VALUES: DEFAULT_EFFECT_VALUES,
+    BORDER_RED: BORDER_RED,
+    BORDER_NO: BORDER_NO,
+    EFFECT_COEFFECENTS: EFFECT_COEFFECENTS,
+    EFFECT_STYLES: EFFECT_STYLES
+  };
+})();
