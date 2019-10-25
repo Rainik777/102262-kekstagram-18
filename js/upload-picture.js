@@ -78,12 +78,12 @@
   });
 
   hashTags.addEventListener('input', function (evt) {
-    evt.target.style = window.constants.BORDER_NO;;
+    evt.target.style = window.constants.BORDER_NO;
     hashTags.setCustomValidity('');
   });
 
   textComment.addEventListener('input', function (evt) {
-    evt.target.style = window.constants.BORDER_NO;;
+    evt.target.style = window.constants.BORDER_NO;
     textComment.setCustomValidity('');
   });
 
