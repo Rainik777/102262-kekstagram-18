@@ -93,7 +93,7 @@
 
   var validateHashTags = function (tags) {
 
-    var tagsList = tags.split(' ').map(function (tag) {
+    var tagsList = tags.replace(/\s+/g, ' ').split(' ').map(function (tag) {
       return tag.trim().toLowerCase();
     }).sort();
 
