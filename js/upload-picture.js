@@ -122,7 +122,7 @@
     });
   };
 
-  var sendPhoto = function (evt) {
+  var sendPhotoCallback = function (evt) {
     var tags = hashTags.value.trim();
     if (tags.length !== 0 && !validateHashTags(tags)) {
       hashTags.style = window.constants.BORDER_RED;
@@ -138,7 +138,7 @@
     var data = new FormData(form);
     window.networking.uploadPhoto(data, window.networking.successUploadDataHandler, window.networking.showErrorMessage);
   };
-  submitButton.addEventListener('click', sendPhoto);
+  submitButton.addEventListener('click', sendPhotoCallback);
 
   window.uploadPicture = {
     clearUploadForm: clearUploadForm,

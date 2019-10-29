@@ -103,14 +103,14 @@
     });
   };
 
-  var applyEffect = function (evt) {
+  var effectClickHandler = function (evt) {
     var currentName = evt.target.value;
     setActiveEffect(currentName);
   };
 
   effects.forEach(function (effect) {
     effectNames.push(effect.value);
-    effect.addEventListener('click', applyEffect);
+    effect.addEventListener('click', effectClickHandler);
   });
 
   var setDefaultPicture = function () {
